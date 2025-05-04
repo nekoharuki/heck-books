@@ -1,14 +1,23 @@
+version: "3.8"
 
 services:
   web:
     build:
       context: .
     command: bundle exec rails server -b 0.0.0.0
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       DATABASE_HOST: tech-books-circle-db.ckt8cykoag62.us-east-1.rds.amazonaws.com
       DATABASE_PORT: "5432"
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: arn:aws:secretsmanager:us-east-1:445162103134:secret:rds!db-63fd3b89-186b-490c-ac83-a3f50d33bf20-uxMsTA
-    depends_on: [] 
+
+  nginx:
+    image: nginx:1.25.3
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web

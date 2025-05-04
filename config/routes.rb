@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root "home#index"      
-  root "home#about"      
+  root "home#index"
+  get "home/about", to: "home#about"
 
   get "up" => "rails/health#show", as: :rails_health_check
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
